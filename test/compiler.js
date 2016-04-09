@@ -79,7 +79,11 @@ test("Create object from files", function(t) {
 
 test("Create Javascript source string from files", function(t) {
   var src = jstc.getSource(props);
-  var obj = {};
+  var obj = {
+    module: {
+      exports: {}
+    }
+  };
 
   try {
     vm.createContext(obj);
@@ -91,6 +95,11 @@ test("Create Javascript source string from files", function(t) {
   t.ok(
     "render" in obj && typeof obj.render === "object",
     "source compiles and creates 'render' object"
+  );
+
+  t.ok(
+    "aaa" in obj.module.exports,
+    "source exports its 'render' object directly"
   );
 
   t.ok(

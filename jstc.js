@@ -2,11 +2,6 @@
 
 var fs = require("fs");
 
-// Heavily inspired by John Resig (creator of jQuery) templating idea.
-// Further inspired by doT.js (sadly abandoned to the point I couldn't use it).
-// This merely compiles a template into a single-argument function which
-// returns a finished string.
-
 var jstc = {};
 
 jstc.find = {
@@ -81,7 +76,7 @@ jstc._readdir = function(srcmode, files) {
       "/*! Templates */",
       '"use strict";',
       "",
-      "(function(context) { var render = {}; "
+      "var render = {};"
     );
     iMax = files.length - 1;
     for (i = 0; i <= iMax; i++) {
@@ -125,12 +120,7 @@ jstc._readdir = function(srcmode, files) {
         obj[bodyName] = newFunc;
       }
     }
-    src.push(
-      "if (typeof context.exports === 'object') ",
-      "{ context.exports = render; } ",
-      "else { context.render = render; }; ",
-      "})(typeof module !== 'undefined' ? module : this);"
-    );
+    src.push("", "module.exports = render;");
   }
   return (srcmode ? src.join("\n") : obj);
 };
