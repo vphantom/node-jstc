@@ -1,3 +1,6 @@
+test/test.clientside.js
+test/test.render.js
+
 # Logs
 logs
 *.log
