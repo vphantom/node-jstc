@@ -1,3 +1,8 @@
+/*! jstc v1.0.0-alpha
+ * <https://github.com/vphantom/node-jstc>
+ * Copyright 2016 Stéphane Lavergne
+ * Free software under <http://www.gnu.org/licenses/lgpl-3.0.txt> */
+
 "use strict";
 
 var fs = require("fs");
