@@ -76,7 +76,8 @@ jstc._readdir = function(srcmode, files) {
       "/*! Templates */",
       '"use strict";',
       "",
-      "var render = {};"
+      "var render = {};",
+      ""
     );
     iMax = files.length - 1;
     for (i = 0; i <= iMax; i++) {
@@ -106,13 +107,14 @@ jstc._readdir = function(srcmode, files) {
         obj[namespace] = {};
       }
       src.push(
-        "\trender"
+        "render"
         + (namespace !== "" ? "['" + namespace + "']" : "")
         + "['"
         + bodyName
         + "'] = "
         + newFunc.toString()
-        + ";"
+        + ";",
+        ""
       );
       if (typeof namespace === "string" && namespace !== "") {
         obj[namespace][bodyName] = newFunc;
@@ -120,7 +122,7 @@ jstc._readdir = function(srcmode, files) {
         obj[bodyName] = newFunc;
       }
     }
-    src.push("", "module.exports = render;");
+    src.push("module.exports = render;");
   }
   return (srcmode ? src.join("\n") : obj);
 };

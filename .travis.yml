@@ -5,7 +5,7 @@ node_js:
    - "4"
 
 script:
-   - istanbul cover --print none --report lcovonly -x 'test/*' test/compiler.js
+   - make travis
 
 after_success:
    - cat ./coverage/lcov.info |coveralls && rm -fr ./coverage

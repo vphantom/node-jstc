@@ -12,7 +12,7 @@ clean:
 	$(MAKE) -C test clean
 
 lint:
-	$(JSLINT) jstc.js cli.js test/*.js
+	$(JSLINT) jstc.js cli.js test/compiler.js test/usage.js
 
 test:	test/test.render.js
 	$(ISTANBUL) cover --print none --report lcov -x 'test/*' test/compiler.js |$(TAP)
@@ -24,6 +24,12 @@ test:	test/test.render.js
 test/test.render.js:
 	$(MAKE) -C test test.render.js
 
-.PHONY: help clean lint test
+travis:	test/test.render.js
+	$(ISTANBUL) cover --print none --report lcovonly -x 'test/*' test/compiler.js
+	node test/usage.js
+	$(BROWSERIFY) test/usage.js -o test/test.clientside.js
+	$(PHANTOMJS) test/test.clientside.js
 
-.SILENT:	help test
+.PHONY: help clean lint test travis
+
+.SILENT:	help test travis
