@@ -41,4 +41,26 @@ module.exports = function(t, render) {
     "non-existent-irregular" in render,
     "non-existent file at unknown location yields no property"
   );
+
+  t.equal(
+    render._lib.tohtml(".&.<.>.\".'./."),
+    ".&amp;.&lt;.&gt;.&quot;.&#39;.&#x2F;.",
+    "render._lib.tohtml() escapes as intended"
+  );
+
+  t.equal(
+    render.escaping(),
+    "<p>.&amp;.&lt;.&gt;.&quot;.&#39;.&#x2F;.</p>",
+    "Templates' lib.tohtml() escapes as intended"
+  );
+
+  render.expose("echo", function(s) {
+    return s + s;
+  });
+
+  t.equal(
+    render.echo({message: "Testing"}),
+    "<p>TestingTesting</p>",
+    "Exposed session function can be invoked"
+  );
 };

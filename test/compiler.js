@@ -8,6 +8,8 @@ var props = [
   "templates/aaa.jst",
   "templates/bbb.jst",
   "templates/cc,,c.jst",
+  "templates/echo.jst",
+  "templates/escaping.jst",
   "plugins/foo/templates/bar.jst",
   "templates/non-existent-regular.jst",
   "templates/,,,.jst",
@@ -15,6 +17,8 @@ var props = [
 ];
 
 /* eslint max-len: "off" */
+
+process.chdir("test");
 
 test("Compiler", function(t) {
   var f = null;
@@ -115,7 +119,6 @@ test("Create Javascript source string from files", function(t) {
     src.search(/Commas/g) >= 0,
     "unusable file name yields no property"
   );
-
 
   t.end();
 });

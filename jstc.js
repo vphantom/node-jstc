@@ -1,4 +1,4 @@
-/*! jstc v1.0.0-alpha
+/*! jstc v1.0.0
  * <https://github.com/vphantom/node-jstc>
  * Copyright 2016 Stéphane Lavergne
  * Free software under <http://www.gnu.org/licenses/lgpl-3.0.txt> */
@@ -21,7 +21,7 @@ jstc.find = {
 };
 
 jstc.compile = function(body) {
-  var src     = "try { var out = '";
+  var src     = "try { var lib = this._lib, out = '";
   var newFunc = null;
 
   src += body
@@ -55,6 +55,22 @@ jstc.compile = function(body) {
   return newFunc;
 };
 
+// Basic concept from Mystache's escapeHtml()
+jstc.tohtml = function(s) {
+  var m = {
+    "&" : "&amp;",
+    "<" : "&lt;",
+    ">" : "&gt;",
+    "\"": "&quot;",
+    "'" : "&#39;",
+    "/" : "&#x2F;"
+  };
+
+  return String(s).replace(/[&<>"'\/]/g, function(k) {
+    return m[k];
+  });
+};
+
 // I'm willingly keeping it simpler with Sync methods for now because this is
 // a build-time tool, not a library.
 jstc._readdir = function(srcmode, files) {
@@ -65,7 +81,14 @@ jstc._readdir = function(srcmode, files) {
     bodyName = "",
     namespace = "",
     src = [],
-    obj = {},
+    obj = {
+      _lib: {
+        tohtml: jstc.tohtml
+      },
+      expose: function(k, v) {
+        this._lib[k] = v;
+      }
+    },
     newFunc = null,
     namespaces = {},
     namespaceRegex = /(plugins\/([^\/]+)\/)?templates\/(.+)\.jst/g,
@@ -82,6 +105,9 @@ jstc._readdir = function(srcmode, files) {
       '"use strict";',
       "",
       "var render = {};",
+      "render._lib = {};",
+      "render.expose = " + obj.expose.toString() + ";",
+      "render._lib.tohtml = " + jstc.tohtml.toString() + ";",
       ""
     );
     iMax = files.length - 1;

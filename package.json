@@ -1,6 +1,6 @@
 {
   "name": "jstc",
-  "version": "1.0.0-alpha",
+  "version": "1.0.0",
   "description": "Lightweight, non-sandboxing JSP-ish template compiler",
   "main": "jstc.js",
   "bin": {
