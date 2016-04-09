@@ -3,7 +3,7 @@
 " I use it with the following in my .vimrc:
 " let g:localvimrc_persistent=2
 " let g:localvimrc_event=["BufWinEnter","BufReadPre","BufNewFile"]
-if &filetype =~ 'javascript'
+if &filetype =~ 'javascript' || &filetype =~ 'json'
    setlocal expandtab
    setlocal tabstop=2
    setlocal shiftwidth=2
