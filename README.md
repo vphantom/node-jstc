@@ -53,7 +53,7 @@ document.write(render.foo());
 jstc templates/*.jst plugins/*/templates/*.jst
 ```
 
-The pattern 'plugins/*/templates/*.jst' is specifically recognized at compile time and creates one property per plugin directory found in the resulting list of files, and creates methods inside each.
+The pattern 'plugins/\*/templates/\*.jst' is specifically recognized at compile time and creates one property per plugin directory found in the resulting list of files, and creates methods inside each.
 
 For example, if one file was named `plugins/foo/templates/bar.jst` you could display it with:
 
