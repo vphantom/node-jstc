@@ -1,0 +1,9 @@
+<h1>Nesting</h1>
+<%= foo({bar: 'first'}) %>
+<%= foo({bar: 'second'}) %>
+<p>External:</p>
+<%@include aaa %>
+<p>the end.</p>
+<%@define foo %>
+<p>Nest: <%= its.bar %></p>
+<%@end %>

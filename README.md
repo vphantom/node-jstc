@@ -121,6 +121,37 @@ falsy
 </p>
 ```
 
+### Pre-processor directives
+
+Pre-processing directives follow the general JSP/ASP syntax: `<%@...%>`.  Whitespace is allowed before and after `@` to suit your preference, making the following all equivalent:
+
+```jsp
+<%@something arg1 arg2%>
+<%@ something arg1 arg2 %>
+<% @something arg1 arg2 %>
+<% @ something arg1 arg2 %>
+```
+
+#### @define *subName* / @end
+
+A template can contain sub-templates (a.k.a. "partials") which are private to the template in which they are defined.  They are invoked as regular functions and do not need to be passed the `it` argument.  If an object is passed as an argument, it is available within the sub-template as `its` to avoid conflicting with the template-wide `it`.
+
+```jsp
+<p>content...</p>
+<%@define foo %>
+<p>This is sub-template foo, seeing: '<%= its.name %>'</p>
+<%@end %>
+<p>Let's use this sub-template a few times:</p>
+<%= foo({name: 'first test'}) %>
+<%= foo({name: 'second trial'}) %>
+<p>That's it!</p>
+```
+
+#### @include
+
+Includes the output of another template.  For example if you have templates `foo.jst` and `bar.jst`, then in the former you could `<%@include bar %>`.  This is a convenience shortcut however, so `bar` will inherit `it` as-is and cannot be passed further arguments.
+
+
 ## MIT License
 
 Copyright (c) 2016 Stephane Lavergne <https://github.com/vphantom>

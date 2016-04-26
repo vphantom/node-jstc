@@ -10,6 +10,9 @@ var fs = require('fs');
 var jstc = {};
 
 jstc.find = {
+  directSub    : /<%@\s*define\s+([a-zA-Z0-9_\-]+)\s*%>([^]*?)<%@\s*end\s*%>/g,
+  directInclude: /<%@\s*include\s+([a-zA-Z0-9_\-]+?)\s*%>/g,
+  directUnknown: /<%@\s*([\s\S]+?)\s*%>/g,
   interpolation: /<%=\s*([\s\S]+?)\s*%>/g,
   evaluation   : /<%\s*([\s\S]+?)\s*%>/g,
   comments     : /<!--[^>]+-->/g,
@@ -17,19 +20,42 @@ jstc.find = {
   tagspace     : />\s+?</g,
   singlequotes : /'/g,
   escquotes    : /\\'/g,
-  sanitize     : /[^a-zA-Z0-9_\-]+/g
+  sanitize     : /[^a-zA-Z0-9_\-]+/g,
+  funcAnonymous: /^\s*function\s+anonymous/
 };
 
-jstc.compile = function(body) {
-  var src     = "try { var lib = this._lib, it = _it ? _it : {}, out = '";
+jstc.compile = function(body, sub) {
+  var src
+    = 'try { var '
+    + (!sub
+      ? '_r = this, lib = _r._lib, it = _it ? _it : {}, '
+      : 'its = _its ? _its : {}, '
+    )
+    + "out = '";
+  var subs = [];
   var newFunc = null;
 
   src += body
     .replace(jstc.find.comments, '')
+    .replace(jstc.find.directSub, function(m, p1, p2) {
+      subs.push(
+        jstc
+          .compile(p2, true)
+          .toString()
+          .replace(jstc.find.funcAnonymous, 'function ' + p1)
+      );
+      return '';
+    })
     .replace(jstc.find.whitespace, ' ')
     .replace(jstc.find.tagspace, '><')
     .trim()
     .replace(jstc.find.singlequotes, "\\'")
+    .replace(jstc.find.directInclude, function(m, p1) {
+      return "' + _r['" + p1 + "'](it) + '";
+    })
+    .replace(jstc.find.directUnknown, function(m, p1) {
+      return '<div class="terror">Unknown directive: ' + p1 + '</div>';
+    })
     .replace(jstc.find.interpolation, function(m, p1) {
       return "' + (" + p1.replace(jstc.find.escquotes, "'") + ") + '";
     })
@@ -42,7 +68,8 @@ jstc.compile = function(body) {
     + "(e && e.message ? e.message.toString() : '') "
     + "+ '</div>'; }; ";
   try {
-    newFunc = new Function('_it', src);
+    src = subs.join('\n') + '\n' + src;
+    newFunc = new Function('_it' + (sub ? 's' : ''), src);
   } catch (e) {
     src = (e && e.message ? e.message.toString() : '');
 

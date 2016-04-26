@@ -10,6 +10,7 @@ var props = [
   'templates/cc,,c.jst',
   'templates/echo.jst',
   'templates/escaping.jst',
+  'templates/nested.jst',
   'plugins/foo/templates/bar.jst',
   'templates/non-existent-regular.jst',
   'templates/,,,.jst',
@@ -68,6 +69,30 @@ test('Compiler', function(t) {
     f(),
     '<div class="terror">Unexpected token {</div>',
     'malformed template runtime yields a string error'
+  );
+
+  t.end();
+});
+
+test('Pre-processor', function(t) {
+  var src = '<p>A</p><%@define foo%><p><%=its.bar%></p><%@end%><%=foo({bar:9})%><%=foo({bar:1})%>';
+  var f = jstc.compile(src);
+
+  t.ok(
+    typeof f === 'function',
+    'template with sub-templates compiles into a function'
+  );
+
+  t.equal(
+    f(),
+    '<p>A</p><p>9</p><p>1</p>',
+    'template with sub-templates runs with expected output'
+  );
+
+  t.equal(
+    jstc.compile('<p>A</p><%@ foo bar %><p>B</p>')(),
+    '<p>A</p><div class="terror">Unknown directive: foo bar</div><p>B</p>',
+    'unknown directive is caught gracefully'
   );
 
   t.end();
