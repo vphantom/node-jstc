@@ -39,8 +39,8 @@ test('Compiler', function(t) {
 
   t.equal(
     f(),
-    "<div class=\"terror\">Cannot read property 'title' of undefined</div>",
-    'template without arguments yields a string error'
+    '<h1>undefined</h1><p>Other thing</p>',
+    "template without arguments contains 'undefined' replacements"
   );
 
   t.equal(

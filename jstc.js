@@ -21,7 +21,7 @@ jstc.find = {
 };
 
 jstc.compile = function(body) {
-  var src     = "try { var lib = this._lib, out = '";
+  var src     = "try { var lib = this._lib, it = _it ? _it : {}, out = '";
   var newFunc = null;
 
   src += body
@@ -42,7 +42,7 @@ jstc.compile = function(body) {
     + "(e && e.message ? e.message.toString() : '') "
     + "+ '</div>'; }; ";
   try {
-    newFunc = new Function('it', src);
+    newFunc = new Function('_it', src);
   } catch (e) {
     src = (e && e.message ? e.message.toString() : '');
 
