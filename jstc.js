@@ -55,7 +55,7 @@ jstc.compile = function(body) {
   return newFunc;
 };
 
-// Basic concept from Mystache's escapeHtml()
+// Basic concept from Mustache's escapeHtml()
 jstc.tohtml = function(s) {
   var m = {
     '&': '&amp;',
