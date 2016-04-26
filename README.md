@@ -1,6 +1,6 @@
-# node-jstc v1.0.1
+# node-jstc v1.1.0
 
-[![Build Status](https://travis-ci.org/vphantom/node-jstc.svg?branch=v1.0.1)](https://travis-ci.org/vphantom/node-jstc) [![Coverage Status](https://coveralls.io/repos/github/vphantom/node-jstc/badge.svg?branch=v1.0.1)](https://coveralls.io/github/vphantom/node-jstc?branch=v1.0.1)
+[![Build Status](https://travis-ci.org/vphantom/node-jstc.svg?branch=v1.1.0)](https://travis-ci.org/vphantom/node-jstc) [![Coverage Status](https://coveralls.io/repos/github/vphantom/node-jstc/badge.svg?branch=v1.1.0)](https://coveralls.io/github/vphantom/node-jstc?branch=v1.1.0)
 
 Lightweight, non-sandboxing JSP-ish template compiler.
 

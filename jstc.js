@@ -1,4 +1,4 @@
-/*! jstc v1.0.1
+/*! jstc v1.1.0
  * <https://github.com/vphantom/node-jstc>
  * Copyright 2016 Stéphane Lavergne
  * Free software under MIT License: <https://opensource.org/licenses/MIT> */
