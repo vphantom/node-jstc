@@ -66,7 +66,7 @@ module.exports = function(t, render) {
 
   t.equal(
     render.nested(),
-    '<h1>Nesting</h1><p>Nest: first</p><p>Nest: second</p><p>External:</p><h1>Aaa</h1><p>the end.</p>',
+    '<h1>Nesting</h1><p>Nest: first</p><p>Nest: second</p><p>External:</p><h1>Bar</h1><p>the end.</p>',
     'Sub-templates and inclusion works as intended'
   );
 };

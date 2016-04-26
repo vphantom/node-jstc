@@ -11,7 +11,7 @@ var jstc = {};
 
 jstc.find = {
   directSub    : /<%@\s*define\s+([a-zA-Z0-9_\-]+)\s*%>([^]*?)<%@\s*end\s*%>/g,
-  directInclude: /<%@\s*include\s+([a-zA-Z0-9_\-]+?)\s*%>/g,
+  directInclude: /<%@\s*include\s+([a-zA-Z0-9_\.\-]+?)\s*%>/g,
   directUnknown: /<%@\s*([\s\S]+?)\s*%>/g,
   interpolation: /<%=\s*([\s\S]+?)\s*%>/g,
   evaluation   : /<%\s*([\s\S]+?)\s*%>/g,
@@ -51,7 +51,7 @@ jstc.compile = function(body, sub) {
     .trim()
     .replace(jstc.find.singlequotes, "\\'")
     .replace(jstc.find.directInclude, function(m, p1) {
-      return "' + _r['" + p1 + "'](it) + '";
+      return "' + _r." + p1 + "(it) + '";
     })
     .replace(jstc.find.directUnknown, function(m, p1) {
       return '<div class="terror">Unknown directive: ' + p1 + '</div>';
